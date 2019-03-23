@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RepositoryRestController
 @RequestMapping("/comments")
@@ -66,10 +68,11 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> submitComment(@Valid @RequestBody CommentRequest request) {
+    public ResponseEntity<CommentResource> submitComment(@Valid @RequestBody CommentRequest request) throws URISyntaxException {
         final Comment comment = commentRequestMapper.toEntity(request);
-        forumFacade.submitCommentOnPost(request.getPostId(), comment);
-        return ResponseEntity.ok().build();
+        Comment savedComment = forumFacade.submitCommentOnPost(request.getPostId(), comment);
+        CommentResource resource = commentResourceAssembler.toResource(savedComment);
+        return ResponseEntity.created(new URI(resource.getId().getHref())).body(resource);
     }
 
     @DeleteMapping("/{id}")

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RepositoryRestController
 @RequestMapping("/posts")
@@ -63,10 +65,11 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<?> submitPost(@Valid @RequestBody PostRequest request) {
+    public ResponseEntity<Resource<PostResource>> submitPost(@Valid @RequestBody PostRequest request) throws URISyntaxException {
         final Post post = postRequestMapper.toEntity(request);
-        forumFacade.submitPostInThread(request.getThreadId(), post);
-        return ResponseEntity.ok().build();
+        Post newPost = forumFacade.submitPostInThread(request.getThreadId(), post);
+        PostResource resource = postResourceAssembler.toResource(newPost);
+        return ResponseEntity.created(new URI(resource.getId().getHref())).body(new Resource<>(resource));
     }
 
     @DeleteMapping("/{id}")

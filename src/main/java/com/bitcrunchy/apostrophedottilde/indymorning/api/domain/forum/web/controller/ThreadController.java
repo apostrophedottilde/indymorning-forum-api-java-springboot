@@ -72,11 +72,11 @@ public class ThreadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createThread(@Valid @RequestBody ThreadRequest request) throws URISyntaxException {
+    public ResponseEntity<ThreadResource> createThread(@Valid @RequestBody ThreadRequest request) throws URISyntaxException {
         Thread thread = threadRequestMapper.toEntity(request);
         Thread savedThread = forumFacade.createNewThread(thread);
         ThreadResource resource = threadResourceAssembler.toResource(savedThread);
-        return ResponseEntity.created(new URI(resource.getId().getHref())).build();
+        return ResponseEntity.created(new URI(resource.getId().getHref())).body(resource);
     }
 
     @DeleteMapping("/{id}")
