@@ -1,12 +1,8 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.hateoas.ResourceSupport;
-
-import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
 
 public abstract class BaseResource extends ResourceSupport {
@@ -18,8 +14,6 @@ public abstract class BaseResource extends ResourceSupport {
 
     @JsonFormat(pattern = "dd::MM::yyyy")
     private LocalDateTime updatedOn;
-
-    private String createdBy;
 
     private String updatedBy;
 
@@ -38,14 +32,6 @@ public abstract class BaseResource extends ResourceSupport {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public LocalDateTime getUpdatedOn() {

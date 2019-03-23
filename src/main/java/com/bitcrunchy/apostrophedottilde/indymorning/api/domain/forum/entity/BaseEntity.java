@@ -21,26 +21,17 @@ public abstract class BaseEntity {
     @JsonFormat(pattern = "dd::MM::yyyy")
     private LocalDateTime updatedOn;
 
-    private String createdBy;
-
-    private String updatedBy;
 
     @PrePersist
     public void prePersist() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         createdOn = LocalDateTime.now();
-        createdBy = auth.getName();
         updatedOn = LocalDateTime.now();
-        updatedBy = auth.getName();
     }
 
     @PreUpdate
     public void preUpdate() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         createdOn = LocalDateTime.now();
-        createdBy = auth.getName();
         updatedOn = LocalDateTime.now();
-        updatedBy = auth.getName();
     }
 
 
@@ -60,21 +51,6 @@ public abstract class BaseEntity {
         this.updatedOn = updatedOn;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
 
     public Long getId() {
         return id;

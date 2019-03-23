@@ -1,5 +1,7 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity;
 
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
+import com.sun.deploy.association.utility.AppUtility;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -19,6 +21,9 @@ public class Thread extends BaseEntity {
 
     @OneToMany
     private List<Post> posts;
+
+    @OneToOne
+    private ApplicationUser creator;
 
     public Thread() { }
 
@@ -68,5 +73,13 @@ public class Thread extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ApplicationUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(ApplicationUser creator) {
+        this.creator = creator;
     }
 }

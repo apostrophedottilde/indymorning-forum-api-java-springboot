@@ -2,7 +2,6 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.security;
 
 import com.auth0.jwt.JWT;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

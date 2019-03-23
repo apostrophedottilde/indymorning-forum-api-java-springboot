@@ -6,8 +6,13 @@ import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Thr
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.CommentService;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.PostService;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.ThreadService;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,10 +26,14 @@ public class ForumFacadeImpl implements ForumFacade {
 
     private CommentService commentService;
 
-    public ForumFacadeImpl(ThreadService threadService, PostService postService, CommentService commentService) {
+    private ApplicationUserService applicationUserService;
+
+    @Autowired
+    public ForumFacadeImpl(ThreadService threadService, PostService postService, CommentService commentService, ApplicationUserService applicationUserService) {
         this.threadService = threadService;
         this.postService = postService;
         this.commentService = commentService;
+        this.applicationUserService = applicationUserService;
     }
 
     @Override
@@ -58,6 +67,9 @@ public class ForumFacadeImpl implements ForumFacade {
 
     @Override
     public Thread createNewThread(Thread thread) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ApplicationUser loggedInUser = applicationUserService.findUserById(Long.valueOf(auth.getName()));
+        thread.setCreator(loggedInUser);
         return threadService.createThread(thread);
     }
 
