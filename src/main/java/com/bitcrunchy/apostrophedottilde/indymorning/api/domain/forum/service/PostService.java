@@ -13,7 +13,7 @@ public interface PostService {
 
     Optional<Post> fetchPost(long threadId);
 
-    void deletePost(Post post);
+    void deletePost(long id);
 
     Page<Post> findPostsInThread(long threadId, Pageable pageable);
 }

@@ -1,20 +1,10 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.controller;
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.ForumFacade;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Comment;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Post;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Thread;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.CommentRequest;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.ThreadRequest;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.mapper.CommentRequestMapper;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.mapper.PostRequestMapper;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.PostRequest;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.mapper.ThreadRequestMapper;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.CommentResource;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.PostResource;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.ThreadResource;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.assembler.CommentResourceAssembler;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.assembler.PostResourceAssembler;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.assembler.ThreadResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,16 +62,16 @@ public class ThreadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createThread(@Valid @RequestBody ThreadRequest request) throws URISyntaxException {
+    public ResponseEntity<Resource<ThreadResource>> createThread(@Valid @RequestBody ThreadRequest request) throws URISyntaxException {
         Thread thread = threadRequestMapper.toEntity(request);
         Thread savedThread = forumFacade.createNewThread(thread);
         ThreadResource resource = threadResourceAssembler.toResource(savedThread);
-        return ResponseEntity.created(new URI(resource.getId().getHref())).build();
+        return ResponseEntity.created(new URI(resource.getId().getHref())).body(new Resource<>(resource));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteThread(@PathVariable long id) {
-        forumFacade.closeThreadWithId(id);
+        forumFacade.deleteThread(id);
         return ResponseEntity.ok().build();
     }
 }

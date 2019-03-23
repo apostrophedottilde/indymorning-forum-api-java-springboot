@@ -1,7 +1,6 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "posts")

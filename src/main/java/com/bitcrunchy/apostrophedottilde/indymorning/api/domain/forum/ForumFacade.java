@@ -16,13 +16,16 @@ public interface ForumFacade {
 
     Comment submitCommentOnPost(long postId, Comment comment);
 
-    void closeThreadWithId(long threadId);
-
     Thread createNewThread(Thread thread);
 
     Page<Thread> fetchAllThreads(Pageable pageable);
 
     Thread fetchThreadById(long threadId);
 
-    void closePostWithId(long id);
+    void deleteThread(long threadId);
+
+    void deleteComment(long id);
+
+    void deletePost(long id);
+
 }

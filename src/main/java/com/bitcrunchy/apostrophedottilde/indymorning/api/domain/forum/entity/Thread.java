@@ -1,7 +1,6 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -69,4 +68,5 @@ public class Thread extends BaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

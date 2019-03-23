@@ -2,6 +2,7 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service;
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Comment;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.repository.CommentRepository;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.util.LoggedInUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +15,12 @@ public class CommentServiceImpl implements CommentService {
 
     private CommentRepository commentRepository;
 
+    private LoggedInUserManager<Comment> loggedInUserManager;
+
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, LoggedInUserManager<Comment> loggedInUserManager) {
         this.commentRepository = commentRepository;
+        this.loggedInUserManager = loggedInUserManager;
     }
 
     @Override
@@ -26,6 +30,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment saveComment(Comment comment) {
+        loggedInUserManager.attachLoggedInUser(comment);
         return commentRepository.save(comment);
     }
 
@@ -40,7 +45,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void closePostWithId(long id) {
+    public void deleteComment(long id) {
         commentRepository.deleteById(id);
     }
+
 }

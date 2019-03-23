@@ -9,7 +9,6 @@ import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resour
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.assembler.CommentResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PageableDefault;
@@ -21,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RepositoryRestController
 @RequestMapping("/comments")
@@ -50,12 +51,12 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentResource> getComment(@PathVariable long id) {
+    public ResponseEntity<Resource<CommentResource>> getComment(@PathVariable long id) {
         Comment comment = commentService.fetchComment(id)
                 .orElseThrow(() -> new EntityNotFoundException("not found comment " + id));
         CommentResource commentResource = commentResourceAssembler.toResource(comment);
 
-        return ResponseEntity.ok(commentResource);
+        return ResponseEntity.ok(new Resource<>(commentResource));
     }
 
     @GetMapping
@@ -66,15 +67,16 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<?> submitComment(@Valid @RequestBody CommentRequest request) {
+    public ResponseEntity<Resource<CommentResource>> submitComment(@Valid @RequestBody CommentRequest request) throws URISyntaxException {
         final Comment comment = commentRequestMapper.toEntity(request);
-        forumFacade.submitCommentOnPost(request.getPostId(), comment);
-        return ResponseEntity.ok().build();
+        Comment savedComment = forumFacade.submitCommentOnPost(request.getPostId(), comment);
+        CommentResource resource = commentResourceAssembler.toResource(savedComment);
+        return ResponseEntity.created(new URI(resource.getId().getHref())).body(new Resource<>(resource));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable long id) {
-        forumFacade.closePostWithId(id);
+        forumFacade.deleteComment(id);
         return ResponseEntity.ok().build();
     }
 }

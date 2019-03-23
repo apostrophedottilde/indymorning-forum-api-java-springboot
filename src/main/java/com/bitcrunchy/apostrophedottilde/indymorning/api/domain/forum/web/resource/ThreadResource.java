@@ -1,5 +1,7 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource;
 
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.resource.BaseResource;
+
 public class ThreadResource extends BaseResource {
 
     private String title;
@@ -33,4 +35,5 @@ public class ThreadResource extends BaseResource {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

@@ -1,34 +1,32 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service;
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Post;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Thread;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.repository.PostRepository;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.repository.ThreadRepository;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.util.LoggedInUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
 
-    private ThreadRepository threadRepository;
-
     private PostRepository postRepository;
 
+    private LoggedInUserManager<Post> loggedInUserManager;
+
     @Autowired
-    public PostServiceImpl(ThreadRepository threadRepository, PostRepository postRepository) {
-        this.threadRepository = threadRepository;
+    public PostServiceImpl(PostRepository postRepository, LoggedInUserManager<Post> loggedInUserManager) {
         this.postRepository = postRepository;
+        this.loggedInUserManager = loggedInUserManager;
     }
 
     @Override
     public Post savePost(Post post) {
-        Post savedPost = postRepository.save(post);
-        return savedPost;
+        loggedInUserManager.attachLoggedInUser(post);
+        return postRepository.save(post);
     }
 
     @Override
@@ -42,8 +40,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Post post) {
-        postRepository.delete(post);
+    public void deletePost(long id) {
+        postRepository.deleteById(id);
     }
 
     @Override

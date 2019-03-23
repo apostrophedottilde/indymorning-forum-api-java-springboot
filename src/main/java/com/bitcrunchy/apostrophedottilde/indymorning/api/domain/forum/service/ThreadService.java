@@ -16,5 +16,6 @@ public interface ThreadService {
 
     Thread saveThread(Thread thread);
 
-    void closeThreadWithId(long threadId);
+    void deleteThread(long threadId);
+
 }

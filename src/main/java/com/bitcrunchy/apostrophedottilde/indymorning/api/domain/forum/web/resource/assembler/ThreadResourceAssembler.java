@@ -3,6 +3,7 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resou
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Thread;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.controller.ThreadController;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.ThreadResource;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.resource.assembler.BaseResourceAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +15,7 @@ public class ThreadResourceAssembler extends BaseResourceAssembler<Thread, Threa
 
     @Override
     public ThreadResource toResource(Thread entity) {
+        super.toResource(entity);
         ThreadResource resource = super.toResource(entity);
         resource.setTitle(entity.getTitle());
         resource.setDescription(entity.getDescription());

@@ -6,8 +6,13 @@ import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Thr
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.CommentService;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.PostService;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.ThreadService;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,6 +26,7 @@ public class ForumFacadeImpl implements ForumFacade {
 
     private CommentService commentService;
 
+    @Autowired
     public ForumFacadeImpl(ThreadService threadService, PostService postService, CommentService commentService) {
         this.threadService = threadService;
         this.postService = postService;
@@ -52,11 +58,6 @@ public class ForumFacadeImpl implements ForumFacade {
     }
 
     @Override
-    public void closeThreadWithId(long threadId) {
-        threadService.closeThreadWithId(threadId);
-    }
-
-    @Override
     public Thread createNewThread(Thread thread) {
         return threadService.createThread(thread);
     }
@@ -72,7 +73,18 @@ public class ForumFacadeImpl implements ForumFacade {
     }
 
     @Override
-    public void closePostWithId(long id) {
-        commentService.closePostWithId(id);
+    public void deleteThread(long threadId) {
+        threadService.deleteThread(threadId);
     }
+
+    @Override
+    public void deleteComment(long id) {
+        commentService.deleteComment(id);
+    }
+
+    @Override
+    public void deletePost(long id) {
+        postService.deletePost(id);
+    }
+
 }

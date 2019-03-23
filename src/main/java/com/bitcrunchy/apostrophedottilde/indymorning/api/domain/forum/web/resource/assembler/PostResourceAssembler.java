@@ -3,6 +3,7 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resou
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Post;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.controller.PostController;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.PostResource;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.resource.assembler.BaseResourceAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +15,7 @@ public class PostResourceAssembler extends BaseResourceAssembler<Post, PostResou
 
     @Override
     public PostResource toResource(Post entity) {
+        super.toResource(entity);
         PostResource resource = super.toResource(entity);
         resource.setText(entity.getText());
         return resource;
