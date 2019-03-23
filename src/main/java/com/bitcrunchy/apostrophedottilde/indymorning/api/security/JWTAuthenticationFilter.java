@@ -2,7 +2,9 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.security;
 
 import com.auth0.jwt.JWT;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import static com.bitcrunchy.apostrophedottilde.indymorning.api.security.Securit
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
 
+    @Autowired
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
@@ -51,11 +54,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) {
-        final long userId = 1213456789;
         String token = JWT.create()
                 .withSubject(((User) auth.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .withClaim("uid", userId)
+//                .withClaim("uid", userId)
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }

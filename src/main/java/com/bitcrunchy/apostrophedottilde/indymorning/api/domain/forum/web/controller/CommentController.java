@@ -52,12 +52,12 @@ public class CommentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentResource> getComment(@PathVariable long id) {
+    public ResponseEntity<Resource<CommentResource>> getComment(@PathVariable long id) {
         Comment comment = commentService.fetchComment(id)
                 .orElseThrow(() -> new EntityNotFoundException("not found comment " + id));
         CommentResource commentResource = commentResourceAssembler.toResource(comment);
 
-        return ResponseEntity.ok(commentResource);
+        return ResponseEntity.ok(new Resource<>(commentResource));
     }
 
     @GetMapping
@@ -68,11 +68,11 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentResource> submitComment(@Valid @RequestBody CommentRequest request) throws URISyntaxException {
+    public ResponseEntity<Resource<CommentResource>> submitComment(@Valid @RequestBody CommentRequest request) throws URISyntaxException {
         final Comment comment = commentRequestMapper.toEntity(request);
         Comment savedComment = forumFacade.submitCommentOnPost(request.getPostId(), comment);
         CommentResource resource = commentResourceAssembler.toResource(savedComment);
-        return ResponseEntity.created(new URI(resource.getId().getHref())).body(resource);
+        return ResponseEntity.created(new URI(resource.getId().getHref())).body(new Resource<>(resource));
     }
 
     @DeleteMapping("/{id}")
