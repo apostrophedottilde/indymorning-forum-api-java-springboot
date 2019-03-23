@@ -2,14 +2,12 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service;
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Thread;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.repository.ThreadRepository;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.util.LoggedInUserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -17,9 +15,12 @@ public class ThreadServiceImpl implements ThreadService {
 
     private ThreadRepository threadRepository;
 
+    private LoggedInUserManager<Thread> loggedInUserManager;
+
     @Autowired
-    public ThreadServiceImpl(ThreadRepository threadRepository) {
+    public ThreadServiceImpl(ThreadRepository threadRepository, LoggedInUserManager<Thread> loggedInUserManager) {
         this.threadRepository = threadRepository;
+        this.loggedInUserManager = loggedInUserManager;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class ThreadServiceImpl implements ThreadService {
 
     @Override
     public Thread createThread(Thread thread) {
+        loggedInUserManager.attachLoggedInUser(thread);
         return threadRepository.save(thread);
     }
 
@@ -43,9 +45,7 @@ public class ThreadServiceImpl implements ThreadService {
     }
 
     @Override
-    public void closeThreadWithId(long threadId) {
-        Thread thread = threadRepository.findById(threadId).orElseThrow(() -> new EntityNotFoundException("Could not find thread with Id: " + threadId + " so cannot CLOSE it."));
-        thread.setState("CLOSED");
-        threadRepository.save(thread);
+    public void deleteThread(long threadId) {
+        threadRepository.deleteById(threadId);
     }
 }

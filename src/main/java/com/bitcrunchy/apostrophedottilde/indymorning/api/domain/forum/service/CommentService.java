@@ -15,5 +15,5 @@ public interface CommentService {
 
     Page<Comment> fetchAllComments(Pageable pageable);
 
-    void closePostWithId(long id);
+    void deleteComment(long id);
 }

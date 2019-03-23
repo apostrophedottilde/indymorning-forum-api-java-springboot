@@ -2,14 +2,13 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.contr
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.ForumFacade;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Post;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.PostService;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.PostRequest;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.mapper.PostRequestMapper;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.PostResource;
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.service.PostService;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.assembler.PostResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PageableDefault;
@@ -74,7 +73,7 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable long id) {
-        forumFacade.closePostWithId(id);
+        forumFacade.deletePost(id);
         return ResponseEntity.ok().build();
     }
 }

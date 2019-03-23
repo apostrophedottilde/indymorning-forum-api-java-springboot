@@ -2,6 +2,7 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.reque
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.Comment;
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.request.CommentRequest;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.web.request.mapper.MapsRequestToEntity;
 import org.springframework.stereotype.Component;
 
 @Component

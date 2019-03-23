@@ -1,8 +1,7 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity;
 
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +13,9 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @OneToOne
+    private ApplicationUser creator;
 
     @JsonFormat(pattern = "dd::MM::yyyy")
     private LocalDateTime createdOn;
@@ -54,5 +56,13 @@ public abstract class BaseEntity {
 
     public Long getId() {
         return id;
+    }
+
+    public ApplicationUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(ApplicationUser creator) {
+        this.creator = creator;
     }
 }

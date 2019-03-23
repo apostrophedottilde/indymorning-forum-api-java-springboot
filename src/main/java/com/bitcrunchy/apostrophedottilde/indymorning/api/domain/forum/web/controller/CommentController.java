@@ -9,7 +9,6 @@ import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resour
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource.assembler.CommentResourceAssembler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.web.PageableDefault;
@@ -77,7 +76,7 @@ public class CommentController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable long id) {
-        forumFacade.closePostWithId(id);
+        forumFacade.deleteComment(id);
         return ResponseEntity.ok().build();
     }
 }

@@ -26,14 +26,11 @@ public class ForumFacadeImpl implements ForumFacade {
 
     private CommentService commentService;
 
-    private ApplicationUserService applicationUserService;
-
     @Autowired
-    public ForumFacadeImpl(ThreadService threadService, PostService postService, CommentService commentService, ApplicationUserService applicationUserService) {
+    public ForumFacadeImpl(ThreadService threadService, PostService postService, CommentService commentService) {
         this.threadService = threadService;
         this.postService = postService;
         this.commentService = commentService;
-        this.applicationUserService = applicationUserService;
     }
 
     @Override
@@ -61,15 +58,7 @@ public class ForumFacadeImpl implements ForumFacade {
     }
 
     @Override
-    public void closeThreadWithId(long threadId) {
-        threadService.closeThreadWithId(threadId);
-    }
-
-    @Override
     public Thread createNewThread(Thread thread) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        ApplicationUser loggedInUser = applicationUserService.findUserById(Long.valueOf(auth.getName()));
-        thread.setCreator(loggedInUser);
         return threadService.createThread(thread);
     }
 
@@ -84,7 +73,18 @@ public class ForumFacadeImpl implements ForumFacade {
     }
 
     @Override
-    public void closePostWithId(long id) {
-        commentService.closePostWithId(id);
+    public void deleteThread(long threadId) {
+        threadService.deleteThread(threadId);
     }
+
+    @Override
+    public void deleteComment(long id) {
+        commentService.deleteComment(id);
+    }
+
+    @Override
+    public void deletePost(long id) {
+        postService.deletePost(id);
+    }
+
 }

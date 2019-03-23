@@ -2,7 +2,7 @@ package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user;
 
 import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.entity.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Entity(name = "app_user")
 public class ApplicationUser extends BaseEntity {

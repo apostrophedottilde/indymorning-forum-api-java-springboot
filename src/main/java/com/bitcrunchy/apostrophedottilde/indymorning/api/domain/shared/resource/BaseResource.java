@@ -1,8 +1,9 @@
-package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource;
+package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.resource;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.ResourceSupport;
+
 import java.time.LocalDateTime;
 
 public abstract class BaseResource extends ResourceSupport {
@@ -16,6 +17,8 @@ public abstract class BaseResource extends ResourceSupport {
     private LocalDateTime updatedOn;
 
     private String updatedBy;
+
+    private Long creator;
 
     @JsonProperty("id")
     public Long getThisId() {
@@ -48,5 +51,13 @@ public abstract class BaseResource extends ResourceSupport {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public Long getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Long creator) {
+        this.creator = creator;
     }
 }

@@ -1,6 +1,6 @@
 package com.bitcrunchy.apostrophedottilde.indymorning.api.domain.forum.web.resource;
 
-import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.user.ApplicationUser;
+import com.bitcrunchy.apostrophedottilde.indymorning.api.domain.shared.resource.BaseResource;
 
 public class ThreadResource extends BaseResource {
 
